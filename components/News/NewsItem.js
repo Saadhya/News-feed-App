@@ -1,23 +1,32 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors } from "../../config/theme";
+import Details from "../../screens/Details";
 import StyledText from "../Texts/StyledText";
 
 const NewsItem = ({ image, title, avatar, author, date, small, ...props }) => {
   let activeColors = colors;
+  const details = Details;
   return (
     <TouchableOpacity
       style={[{ backgroundColor: activeColors.secondary }, styles.container]}
       {...props}
+      onPress={() => details}
     >
       <Image source={image} style={styles.image} />
       <View style={styles.bottomSection}>
-        <StyledText numberOfLines={3} style={[{ color: activeColors.accent }, styles.title]} bold>
+        <StyledText
+          numberOfLines={3}
+          style={[{ color: activeColors.accent }, styles.title]}
+          bold
+        >
           {title}
         </StyledText>
         <View style={styles.authorRow}>
           <View style={styles.author}>
             <Image source={avatar} style={styles.avatar} />
-            <StyledText numberOfLines={2} bold>{author}</StyledText>
+            <StyledText numberOfLines={2} bold>
+              {author}
+            </StyledText>
           </View>
           <StyledText
             style={[{ color: activeColors.tertiary }, styles.date]}
