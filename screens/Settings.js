@@ -7,13 +7,18 @@ import StyledText from "../components/Texts/StyledText";
 
 // data
 import SettingsItem from "../components/settings/SettingsItem";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SettingsButton from "../components/settings/SettingsButton";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 const Settings = () => {
-  let activeColors = colors;
-  const [isActive, setIsActive] = useState(false);
+  const { theme, handleTheme } = useContext(ThemeContext);
+  //   const theme = {mode:"dark"}
+  let activeColors = colors[theme.mode];
+
+  const [isActive, setIsActive] = useState(theme.mode === "dark");
   const handleSwitch = () => {
+    handleTheme();
     setIsActive((previousState) => !previousState);
   };
   return (
@@ -55,13 +60,36 @@ const Settings = () => {
         Theme Settings
       </StyledText>
       <View style={styles.section}>
-        <SettingsButton label="Light" icon="lightbulb-on" isActive={false}>
+        <SettingsButton
+          label="Light"
+          icon="lightbulb-on"
+          isActive={theme.mode === "light" && !theme.system}
+          onPress={() => {
+            handleTheme({ mode: "light" });
+          }}
+        >
           <StyledText>Krishna Vasudev</StyledText>
         </SettingsButton>
-        <SettingsButton label="Dark">
+
+        <SettingsButton
+          label="Dark"
+          icon="weather-night"
+          isActive={theme.mode === "dark" && !theme.system}
+          onPress={() => {
+            handleTheme({ mode: "dark" });
+          }}
+        >
           <StyledText>30/01/2023</StyledText>
         </SettingsButton>
-        <SettingsButton label="System"></SettingsButton>
+
+        <SettingsButton
+          label="System"
+          icon="theme-light-dark"
+          onPress={() => {
+            handleTheme({ system: true });
+          }}
+          isActive={theme.system}
+        ></SettingsButton>
       </View>
     </MainContainer>
   );

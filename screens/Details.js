@@ -4,15 +4,18 @@ import { colors } from "../config/theme";
 // components
 import MainContainer from "../components/containers/MainContainers";
 import StyledText from "../components/Texts/StyledText";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { useContext } from "react";
 
-// data
-import { newsData } from "../config/data";
+const Details = ({ route }) => {
+  const { theme } = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
 
-const Details = () => {
-  let activeColors = colors;
+  const { image, title, avatar, content, author, date } = route?.params;
+
   return (
     <MainContainer style={[{ backgroundColor: activeColors.secondary }]}>
-      <Image source={newsData[0].image} style={styles.image} />
+      <Image source={image} style={styles.image} />
 
       <View
         style={[
@@ -25,23 +28,23 @@ const Details = () => {
           style={[{ color: activeColors.accent }, styles.title]}
           big
         >
-          {newsData[0].title}
+          {title}
         </StyledText>
         <View style={styles.authorRow}>
           <View style={styles.author}>
-            <Image source={newsData[0].avatar} style={styles.avatar} />
+            <Image source={avatar} style={styles.avatar} />
             <StyledText numberOfLines={2} bold>
-              {newsData[0].author}
+              {author}
             </StyledText>
           </View>
           <StyledText
             style={[{ color: activeColors.tertiary }, styles.date]}
             small
           >
-            {newsData[0].date}
+            {date}
           </StyledText>
         </View>
-        <StyledText style={styles.content}>{newsData[0].content}</StyledText>
+        <StyledText style={styles.content}>{content}</StyledText>
       </View>
     </MainContainer>
   );

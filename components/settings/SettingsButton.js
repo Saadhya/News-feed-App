@@ -1,11 +1,15 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useContext } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors } from "../../config/theme";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import StyledText from "../Texts/StyledText";
 
 const SettingsButton = ({ icon, isActive, label, ...props }) => {
-  let activeColors = colors;
-
+    // const theme = {mode:"dark"}
+  const { theme } = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
+  
   return (
     <TouchableOpacity
       style={[
@@ -20,18 +24,26 @@ const SettingsButton = ({ icon, isActive, label, ...props }) => {
         <MaterialCommunityIcons
           name={icon}
           size={24}
+          style={styles.icon}
           color={activeColors.tertiary}
         />
         <StyledText style={[{ color: activeColors.tertiary }, styles.label]}>
           {label}
         </StyledText>
       </View>
+      <MaterialCommunityIcons
+        name={
+          isActive ? "checkbox-marked-circle" : "checkbox-blank-circle-outline"
+        }
+        size={24}
+        style={styles.icon}
+        color={isActive ? activeColors.accent : activeColors.tertiary}
+      />
     </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
   settingsItem: {
-    padding: 25,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -41,6 +53,13 @@ const styles = StyleSheet.create({
   },
   label: {
     fontStyle: "italic",
+  },
+  labelGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  icon: {
+    marginRight: 15,
   },
 });
 

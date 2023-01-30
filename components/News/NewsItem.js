@@ -1,16 +1,38 @@
+import { useNavigation } from "@react-navigation/native";
+import { useContext } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors } from "../../config/theme";
-import Details from "../../screens/Details";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import StyledText from "../Texts/StyledText";
 
-const NewsItem = ({ image, title, avatar, author, date, small, ...props }) => {
-  let activeColors = colors;
-  const details = Details;
+const NewsItem = ({
+  image,
+  title,
+  avatar,
+  author,
+  date,
+  content,
+  small,
+  ...props
+}) => {
+  const { theme } = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
+
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={[{ backgroundColor: activeColors.secondary }, styles.container]}
       {...props}
-      onPress={() => details}
+      onPress={() => {
+        navigation.navigate("Details", {
+          image,
+          title,
+          avatar,
+          content,
+          author,
+          date,
+        });
+      }}
     >
       <Image source={image} style={styles.image} />
       <View style={styles.bottomSection}>
@@ -24,7 +46,7 @@ const NewsItem = ({ image, title, avatar, author, date, small, ...props }) => {
         <View style={styles.authorRow}>
           <View style={styles.author}>
             <Image source={avatar} style={styles.avatar} />
-            <StyledText numberOfLines={2} bold>
+            <StyledText numberOfLines={2} bold >
               {author}
             </StyledText>
           </View>
@@ -43,7 +65,7 @@ const styles = StyleSheet.create({
   container: {
     height: 370,
     width: 300,
-    bordeRadius: 25,
+    borderRadius: 25,
     marginRight: 20,
   },
   image: {

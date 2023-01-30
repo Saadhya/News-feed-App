@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { colors } from "../../config/theme";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import StyledText from "../Texts/StyledText";
 
 const SettingsItem = ({ children, label }) => {
-  let activeColors = colors;
+  const { theme } = useContext(ThemeContext);
+  let activeColors = colors[theme.mode];
 
   return (
     <View
